@@ -36,7 +36,10 @@ public class RedesController {
 			    			bufferAdap.append(" ");
 			    		}
 			    	} else {
-			    		System.out.println(linha);
+			    		if (linha.contains("flags=") || linha.contains("inet ")) {
+			      			bufferAdap.append(linha);
+			    			bufferAdap.append("\n");
+			    		}
 			    	}
 			    	linha = buffer.readLine();
 			    }

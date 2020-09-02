@@ -26,15 +26,18 @@ public class RedesController {
 			    String adaptador = "";
 			    StringBuffer bufferAdap = new StringBuffer();
 			    while (linha != null) {
-			    	if (linha.contains("Adaptador")) {
-			    		adaptador = linha;
+			    	if (os.contains("Windows")) {
+			    		if (linha.contains("Adaptador")) {
+			    			adaptador = linha;
+			    		}
+			    		if (linha.contains("IPv4")) {
+			    			bufferAdap.append(adaptador);
+			    			bufferAdap.append(linha);
+			    			bufferAdap.append(" ");
+			    		}
+			    	} else {
+			    		System.out.println(linha);
 			    	}
-			    	if (linha.contains("IPv4")) {
-			    		bufferAdap.append(adaptador);
-			    		bufferAdap.append(linha);
-			    		bufferAdap.append(" ");
-			    	}
-			    			    	
 			    	linha = buffer.readLine();
 			    }
 			    
@@ -54,7 +57,7 @@ public class RedesController {
 		if (os.contains("Windows")) {
 			 processo = "ping -n 10 www.google.com";
 		} else {
-			processo = "ping www.google.com";
+			processo = "ping -c 10 www.google.com";
 		}
 		 try {
 				Process p = Runtime.getRuntime().exec(processo);
@@ -64,21 +67,25 @@ public class RedesController {
 			    String linha = buffer.readLine();
 			    StringBuffer bufferAdap = new StringBuffer();
 			    while (linha != null) {
+			    	System.out.println(linha);
+		    	   			    	   	
 			    	if (os.contains("Windows")) {
 			    		if (linha.contains("dia = ")) {
 			    			bufferAdap.append(linha.substring(linha.lastIndexOf("=")+1,linha.length()).trim());
 			    			bufferAdap.append(" ");
 			    		}
-			    	   	System.out.println(linha);
-			    	   	linha = buffer.readLine();
+			    	   
 			    	} else {
-			    		if (linha.contains("dia = ")) {
-			    			bufferAdap.append(linha.substring(linha.lastIndexOf("=")+1,linha.length()).trim());
-			    			bufferAdap.append(" ");
+			    		
+			    		if (linha.contains("min/avg/")) {
+			    			linha = linha.substring(0,linha.lastIndexOf("/")).trim();
+			    			linha = linha.substring(0,linha.lastIndexOf("/")).trim();
+			    			bufferAdap.append(linha.substring(linha.lastIndexOf("/")+1,linha.length()).trim());
+			    			bufferAdap.append(" ms ");
 			    		}
-			    	   	System.out.println(linha);
-			    	   	linha = buffer.readLine();
 			    	}
+			    	
+			    	linha = buffer.readLine();
 			    }
 			    
 			    os = bufferAdap.toString();
